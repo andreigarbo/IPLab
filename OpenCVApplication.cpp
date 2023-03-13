@@ -666,57 +666,6 @@ void lab2() {
 	}
 }
 
-void computeGrayscaleHistogram(char fname[256], int histogram[256]) {
-	Mat src = imread(fname, IMREAD_GRAYSCALE);
-	unsigned char collector;
-	for (int i = 0; i < 256; i++)
-		histogram[i] = 0;
-	int rs = src.rows, cs = src.cols;
-	for (int i = 0; i < rs; i++) {
-		for (int j = 0; j < cs; j++) {
-			collector = src.at<unsigned char>(i, j);
-			histogram[collector]++;
-		}
-	}
-}
-
-void computeGrayscalePDF(char fname[256], int histogram[256], float pdf[256]) {
-	Mat src = imread(fname, IMREAD_GRAYSCALE);
-	for (int i = 0; i < 256; i++) {
-		pdf[i] = histogram[i] / src.rows * src.cols;
-	}
-}
-
-void computeGrayscaleHistogramMbins(char fname[256], int *histogram,int bins) {
-	Mat src = imread(fname, IMREAD_GRAYSCALE);
-	unsigned char collector;
-	histogram = (int*)malloc(bins);
-	for (int i = 0; i < 256; i++) {
-		for (int j = 0; j < 256; j++) {
-			collector = src.at<unsigned char>(i, j);
-			histogram[(int)(i / bins)] ++;
-		}
-	}
-}
-
-void lab3() {
-	char fname[MAX_PATH];
-	int grayscaleHistogram[256];
-	float grayscalePDF[256];
-	int* histogramNBins;
-	while (openFileDlg(fname)) {
-		Mat src = imread(fname, IMREAD_COLOR);
-		computeGrayscaleHistogram(fname, grayscaleHistogram);
-		computeGrayscalePDF(fname, grayscaleHistogram, grayscalePDF);
-		showHistogram("GRAYSCALE HISTOGRAM", grayscaleHistogram, 256,200);
-		int bins;
-		std::cout << "Input the number of bins" << std::endl;
-		std::cin >> bins;
-		computeGrayscaleHistogramMbins(fname, histogramNBins, bins);
-		showHistogram("GRAYSCALE HISTOGRAM M BINS", grayscaleHistogram, bins, 200);
-	}
-}
-
 int main() 
 {
 	cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_FATAL);
